@@ -1,0 +1,9 @@
+one:
+  username: MyString
+  email: user1@example.com
+  password: MyString
+
+two:
+  username: MyString
+  email: user2@example.com
+  password: MyString
