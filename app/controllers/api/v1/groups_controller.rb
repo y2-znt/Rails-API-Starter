@@ -1,4 +1,4 @@
-class GroupsController < ApplicationController
+class Api::V1::GroupsController < ApplicationController
   before_action :set_group, only: [ :show, :update, :destroy ]
 
   # GET /groups
@@ -8,7 +8,7 @@ class GroupsController < ApplicationController
     render json: @groups
   end
 
-  # GET /groups/1
+  # GET /groups/:id
   def show
     render json: @group
   end
@@ -18,13 +18,13 @@ class GroupsController < ApplicationController
     @group = Group.new(group_params)
 
     if @group.save
-      render json: @group, status: :created, location: @group
+      render json: @group, status: :created, location: api_v1_group_url(@group)
     else
       render json: @group.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /groups/1
+  # PATCH/PUT /groups/:id
   def update
     if @group.update(group_params)
       render json: @group
@@ -33,7 +33,7 @@ class GroupsController < ApplicationController
     end
   end
 
-  # DELETE /groups/1
+  # DELETE /groups/:id
   def destroy
     @group.destroy!
   end
