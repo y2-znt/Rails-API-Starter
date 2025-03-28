@@ -13,7 +13,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
 
   def test_should_create_user
     assert_difference("User.count") do
-      post api_v1_users_url, params: { user: { email: @unique_email, password: @user.password, username: @user.username } }, as: :json
+      post api_v1_users_url, params: {user: {email: @unique_email, password: @user.password, username: @user.username}}, as: :json
     end
 
     assert_response :created
@@ -25,7 +25,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_should_update_user
-    patch api_v1_user_url(@user), params: { user: { email: @unique_email, password: @user.password, username: @user.username } }, as: :json
+    patch api_v1_user_url(@user), params: {user: {email: @unique_email, password: @user.password, username: @user.username}}, as: :json
     assert_response :success
   end
 

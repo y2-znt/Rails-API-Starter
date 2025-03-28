@@ -12,7 +12,7 @@ class Api::V1::GroupsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create group" do
     assert_difference("Group.count") do
-      post api_v1_groups_url, params: { group: { name: @group.name } }, as: :json
+      post api_v1_groups_url, params: {group: {name: @group.name}}, as: :json
     end
 
     assert_response :created
@@ -24,7 +24,7 @@ class Api::V1::GroupsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update group" do
-    patch api_v1_group_url(@group), params: { group: { name: @group.name } }, as: :json
+    patch api_v1_group_url(@group), params: {group: {name: @group.name}}, as: :json
     assert_response :success
   end
 
