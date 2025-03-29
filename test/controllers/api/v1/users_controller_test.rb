@@ -10,10 +10,10 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     create(:user, email: "user1@example.com")
     create(:user, email: "user2@example.com")
     create(:user, email: "user3@example.com")
-    
+
     get api_v1_users_path
     assert_response :success
-    
+
     response_body = JSON.parse(response.body)
     assert_equal User.count, response_body.length
   end
@@ -23,15 +23,15 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     response_body = JSON.parse(response.body)
-    assert_equal @user.id, response_body['id']
+    assert_equal @user.id, response_body["id"]
   end
 
   test "should create user" do
-    assert_difference('User.count') do
+    assert_difference("User.count") do
       post api_v1_users_path, params: {
-        username: 'testuser',
-        email: 'test@example.com',
-        password: 'password123'
+        username: "testuser",
+        email: "test@example.com",
+        password: "password123"
       }
     end
 
