@@ -11,7 +11,7 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
 
   test "should register new user with valid params" do
     assert_difference("User.count") do
-      post api_v1_auth_register_path, params: @user_params
+      post api_v1_register_path, params: @user_params
     end
 
     assert_response :created
@@ -19,7 +19,7 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not register user with invalid params" do
-    post api_v1_auth_register_path, params: {email: "test@example.com", password: "short"}
+    post api_v1_register_path, params: {email: "test@example.com", password: "short"}
 
     assert_response :unprocessable_entity
     response_errors = JSON.parse(response.body)["errors"]
@@ -30,7 +30,7 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
   test "should login user with valid credentials" do
     User.create!(@user_params)
 
-    post api_v1_auth_login_path, params: {
+    post api_v1_login_path, params: {
       email: @user_params[:email],
       password: @user_params[:password]
     }
@@ -42,7 +42,7 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
   test "should not login user with invalid credentials" do
     User.create!(@user_params)
 
-    post api_v1_auth_login_path, params: {
+    post api_v1_login_path, params: {
       email: @user_params[:email],
       password: "wrongpassword"
     }
@@ -52,7 +52,7 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not login with non-existent email" do
-    post api_v1_auth_login_path, params: {
+    post api_v1_login_path, params: {
       email: "nonexistent@example.com",
       password: "password123"
     }
