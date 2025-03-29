@@ -15,7 +15,7 @@ gem "puma", ">= 5.0"
 # gem "kredis"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[windows jruby]
@@ -41,4 +41,13 @@ group :development, :test do
 
   # Annotate Rails models with their associations [https://github.com/drwl/annotaterb]
   gem "annotaterb"
+
+  # Add Factory Bot Rails for test data generation [https://github.com/thoughtbot/factory_bot_rails]
+  gem "factory_bot_rails"
+
+  # Add Shoulda Matchers for testing validations and associations [https://github.com/thoughtbot/shoulda-matchers]
+  gem "shoulda-matchers", "~> 5.0"
+
+  # Add Shoulda Context for testing contexts [https://github.com/thoughtbot/shoulda-context]
+  gem "shoulda-context"
 end
