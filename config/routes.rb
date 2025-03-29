@@ -5,7 +5,7 @@ Rails.application.routes.draw do
         post "/register", to: "auth#register"
         post "/login", to: "auth#login"
       end
-      scope :me do
+      scope :me, as: :me do
         get "", to: "me#show"
         patch "", to: "me#update"
         delete "", to: "me#destroy"
