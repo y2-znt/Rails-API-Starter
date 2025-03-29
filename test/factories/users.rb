@@ -13,19 +13,10 @@
 #
 #  index_users_on_email  (email) UNIQUE
 #
-require "test_helper"
-
-class UserTest < ActiveSupport::TestCase
-  context "validations" do
-    setup do
-      create(:user)
-    end
-
-    should validate_presence_of(:username)
-    should validate_presence_of(:email)
-    should validate_uniqueness_of(:email)
-    should validate_presence_of(:password)
-    should have_secure_password
-    should validate_length_of(:password).is_at_least(8)
+FactoryBot.define do
+  factory :user do
+    username { "John Doe" }
+    email { "john.doe@example.com" }
+    password { "10nGpa55w0rd" }
   end
 end
