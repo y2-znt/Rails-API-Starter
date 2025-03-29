@@ -3,6 +3,8 @@ require "test_helper"
 class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
+    @token = JsonWebToken.encode(user_id: @user.id)
+    @headers = {"Authorization" => "Bearer #{@token}"}
   end
 
   test "should return all users" do
@@ -11,7 +13,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
     create(:user, email: "user2@example.com")
     create(:user, email: "user3@example.com")
 
-    get api_v1_users_path
+    get api_v1_users_path, headers: @headers
     assert_response :success
 
     response_body = JSON.parse(response.body)
@@ -19,7 +21,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show user" do
-    get api_v1_user_path(@user)
+    get api_v1_user_path(@user), headers: @headers
     assert_response :success
 
     response_body = JSON.parse(response.body)
@@ -54,10 +56,12 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update user" do
-    patch api_v1_user_path(@user), params: {
-      username: "updated_username",
-      password: "newpassword123"
-    }
+    patch api_v1_user_path(@user),
+      headers: @headers,
+      params: {
+        username: "updated_username",
+        password: "newpassword123"
+      }
     assert_response :no_content
 
     @user.reload
@@ -66,10 +70,12 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should not update user with invalid params" do
     original_username = @user.username
-    patch api_v1_user_path(@user), params: {
-      username: "",
-      password: ""
-    }
+    patch api_v1_user_path(@user),
+      headers: @headers,
+      params: {
+        username: "",
+        password: ""
+      }
     assert_response :unprocessable_entity
 
     @user.reload
@@ -78,14 +84,14 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy user" do
     assert_difference("User.count", -1) do
-      delete api_v1_user_path(@user)
+      delete api_v1_user_path(@user), headers: @headers
     end
 
     assert_response :no_content
   end
 
   test "should return not found for non-existent user" do
-    get api_v1_user_path(id: "nonexistent")
+    get api_v1_user_path(id: "nonexistent"), headers: @headers
     assert_response :not_found
   end
 end
