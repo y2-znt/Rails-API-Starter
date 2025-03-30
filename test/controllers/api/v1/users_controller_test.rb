@@ -64,7 +64,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "regular user should not create user" do
     assert_no_difference("User.count") do
-      post api_v1_users_path, 
+      post api_v1_users_path,
         headers: @user_headers,
         params: {
           username: "testuser",
@@ -78,7 +78,7 @@ class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create user with invalid params" do
     assert_no_difference("User.count") do
-      post api_v1_users_path, 
+      post api_v1_users_path,
         headers: @admin_headers,
         params: {
           username: "",

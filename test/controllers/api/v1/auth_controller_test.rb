@@ -7,6 +7,9 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
       email: "test@example.com",
       password: "password123"
     }
+    @user = User.create!(@user_params)
+    @token = JsonWebToken.encode(user_id: @user.id)
+    @headers = {"Authorization" => "Bearer #{@token}"}
   end
 
   test "should register new user with valid params" do
@@ -28,8 +31,6 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should login user with valid credentials" do
-    User.create!(@user_params)
-
     post api_v1_login_path, params: {
       email: @user_params[:email],
       password: @user_params[:password]
@@ -40,8 +41,6 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not login user with invalid credentials" do
-    User.create!(@user_params)
-
     post api_v1_login_path, params: {
       email: @user_params[:email],
       password: "wrongpassword"
@@ -59,5 +58,15 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unauthorized
     assert_equal "Invalid email or password", JSON.parse(response.body)["error"]
+  end
+
+  test "should logout user" do
+    post api_v1_logout_path, headers: @headers
+    assert_response :no_content
+  end
+
+  test "should not logout without authentication" do
+    post api_v1_logout_path
+    assert_response :unauthorized
   end
 end
