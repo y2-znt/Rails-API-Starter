@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  include Authorisation
+  attr_reader :current_user
   before_action :authenticate_request
 
   private
