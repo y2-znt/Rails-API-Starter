@@ -21,6 +21,10 @@ class Api::V1::AuthController < ApplicationController
     end
   end
 
+  def logout
+    head :no_content
+  end
+
   private
 
   def user_params

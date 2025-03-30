@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       scope :auth do
         post "/register", to: "auth#register"
         post "/login", to: "auth#login"
+        post "/logout", to: "auth#logout"
       end
       scope :me, as: :me do
         get "", to: "me#show"
