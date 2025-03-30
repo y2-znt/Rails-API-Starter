@@ -2,9 +2,10 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
+#  id              :bigint           not null, primary key
 #  email           :string           not null
 #  password_digest :string           not null
+#  role            :enum             default("user"), not null
 #  username        :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -16,7 +17,7 @@
 FactoryBot.define do
   factory :user do
     username { "John Doe" }
-    email { "john.doe@example.com" }
+    sequence(:email) { |n| "user#{n}@example.com" }
     password { "10nGpa55w0rd" }
   end
 end
