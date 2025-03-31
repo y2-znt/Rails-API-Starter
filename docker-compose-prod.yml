@@ -1,12 +1,10 @@
 services:
-  rails_api_prod:
+  rails-api-prod:
     build:
       context: .
       dockerfile: Dockerfile.prod
     ports:
       - "4000:4000"
-    depends_on:
-      - db-prod
     environment:
       - RAILS_ENV=production
       - DATABASE_URL=postgresql://postgres:postgres@db-prod:5432/rails_api_production
@@ -14,11 +12,13 @@ services:
       - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
     volumes:
       - rails_storage:/rails/storage
+    depends_on:
+      - db-prod
 
   db-prod:
     image: postgres:15
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_prod:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
@@ -28,10 +28,10 @@ services:
     restart: unless-stopped
 
 volumes:
-  postgres_data:
+  postgres_data_prod:
   rails_storage:
 # To start the production environment, run:
 # docker-compose -f docker-compose-prod.yml up -d --build
 
 # To start a migration, run:
-# docker compose -f docker-compose-prod.yml exec rails_api_prod bundle exec rails db:migrate
+# docker compose -f docker-compose-prod.yml exec rails-api-prod bundle exec rails db:migrate
