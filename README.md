@@ -1,200 +1,202 @@
 # 💎 Rails API Starter 💎
 
-## Rails 8 Production-Ready API Starter — for startups, hackathons, or clean backend projects.
+<div align="center">
 
 ![Ruby](https://img.shields.io/badge/ruby-%23CC342D.svg?style=for-the-badge&logo=ruby&logoColor=white)
 ![Rails](https://img.shields.io/badge/rails-%23CC0000.svg?style=for-the-badge&logo=ruby-on-rails&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
-![Pundit](https://img.shields.io/badge/Pundit-Authorization-green)
-![Minitest](https://img.shields.io/badge/Minitest-Testing-yellow)
+Rails 8 Production-Ready API Starter — for startups, hackathons, or clean backend projects.
 
-## Features
+[Overview](#-overview) •
+[Quick Start](#-quick-start) •
+[Architecture](#️-architecture) •
+[API Documentation](#-api-documentation) •
+[Development & Testing](#-development)
 
-### Authentication & Security
+</div>
 
-- **JWT-based Authentication** with secure token management
-- **Role-based Authorization** using Pundit policies
-- **Bcrypt Password Encryption**
-- **CORS Protection** with rack-cors
-- **Security-first Approach** with before_action guards
+## 👀 Overview
 
-### API Architecture
+### Why Choose This Starter?
 
-- **RESTful API Design**
-- **Versioned API Structure** (v1)
-- **JSON Serialization** with ActiveModelSerializers
-- **Policy-based Authorization** with comprehensive test coverage
-- **Clean Controller Architecture** with concerns separation
+- **Production-Grade Architecture**: Built with scalability and maintainability in mind
+- **Modern Development Flow**: Docker-based development and deployment
+- **Security First**: JWT authentication, role-based authorization, and comprehensive security measures
+- **Developer Experience**: Hot-reloading, debugging tools, and extensive documentation
+- **Best Practices**: SOLID principles, clean code, and comprehensive testing
+- **CI/CD Ready**: GitHub Actions workflow with security scanning and automated testing
 
-### User Management
+### Key Features
 
-- **Complete User CRUD Operations**
-- **Role Management** (Admin/User)
-- **Profile Management** with the /me endpoint
-- **Secure Password Reset Flow**
-- **Email Validation**
+- 🔒 **Security**
 
-### Code Quality
+  - JWT stateless authentication
+  - Role-based authorization (Admin/User)
+  - CORS protection via Rack
+  - Brakeman security scans
+  - Secure headers & password encryption
 
-- **Comprehensive Test Suite** using MiniTest
-  - Policy Tests
-  - Controller Tests
-  - Model Tests
-- **Static Code Analysis** with Brakeman
-- **Code Style** enforcement with Rubocop Rails Omakase
-- **Automated Model Annotation** with annotaterb
+- 🏗️ **API Architecture**
 
-### Development Tools
+  - RESTful API structure (v1)
+  - JSON serialization with ActiveModelSerializers
+  - Clean controller logic with concerns
+  - Policy-based permissions
 
-- **Factory Bot** for test data generation
-- **Shoulda Matchers** for elegant testing
-- **Debug Tools** for development
-- **Annotated Models** for better documentation
+- 👥 **User Management**
+  - JWT authentication flow
+  - Role-based access control
+  - Profile management
 
-## 🔪 Technical Stack
+## 🤸‍♀️ Quick Start
 
-- **Ruby 3.x**
-- **Rails 8.0.2**
-- **PostgreSQL**
-- **JWT** for stateless authentication
-- **Pundit** for authorization
-- **ActiveModelSerializers** for JSON serialization
-- **Rack CORS** for CORS handling
-- **Bcrypt** for password hashing
+### Prerequisites
+
+- Ruby 3.3.0 or later
+- PostgreSQL 14 or later
+- Bundler 2.5 or later
+- Docker (optional)
+
+### Using Docker (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/y2-znt/rails-api-starter.git
+
+# Start the development environment
+docker compose -f docker-compose-dev.yml up -d --build
+
+# Run migrations
+docker compose -f docker-compose-dev.yml exec rails-api-dev bundle exec rails db:migrate
+```
+
+### Without Docker
+
+```bash
+# Clone the repository
+git clone https://github.com/y2-znt/rails-api-starter.git
+
+# Install dependencies
+bundle install
+
+# Setup database
+cp config/database.yml.example config/database.yml
+rails db:create
+rails db:migrate
+
+# Start the server
+rails server
+```
+
+Visit `http://localhost:4000` - You're ready to go! 🎉
+
+## 🏗️ Architecture
+
+### Project Structure
+
+This project follows a classic Rails API structure with a versioned `/api/v1` namespace:
+
+- `app/controllers/api/v1`: API endpoints and business logic
+- `app/models`: Active Record models and validations
+- `app/policies`: Pundit authorization policies
+- `app/serializers`: JSON response formatting
+- `lib/`: Reusable services and utilities
+- `config/`: Application configuration
+- `db/`: Database migrations and schema
+
+### Technical Stack
+
+- **Framework**: Ruby on Rails 8 (API mode)
+- **Database**: PostgreSQL 14
+- **Authentication**: JWT (stateless)
+- **Authorization**: Pundit
+- **API Serialization**: ActiveModelSerializers
+- **Security**:
+  - Bcrypt for password hashing
+  - Rack CORS for CORS handling
+  - Brakeman for security scanning
 
 ## 📚 API Documentation
 
-### Authentication Endpoints
+### Auth Endpoints
 
-| Endpoint                | Method | Description       | Request Body                                                        | Success Response                                              | Error Response      |
-| ----------------------- | ------ | ----------------- | ------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------- |
-| `/api/v1/auth/register` | POST   | Register new user | `{ "email": "string", "password": "string", "username": "string" }` | `201 Created` `{ "message": "User created", "token": "jwt" }` | `422 Unprocessable` |
-| `/api/v1/auth/login`    | POST   | Login user        | `{ "email": "string", "password": "string" }`                       | `200 OK` `{ "token": "jwt" }`                                 | `401 Unauthorized`  |
-| `/api/v1/auth/logout`   | POST   | Logout user       | -                                                                   | `204 No Content`                                              | `401 Unauthorized`  |
+| Endpoint                | Method | Description       | Response (Success)        |
+| ----------------------- | ------ | ----------------- | ------------------------- |
+| `/api/v1/auth/register` | POST   | Register new user | `201 Created` + JWT token |
+| `/api/v1/auth/login`    | POST   | Login             | `200 OK` + JWT token      |
+| `/api/v1/auth/logout`   | POST   | Logout            | `204 No Content`          |
 
-### User Management
+### User Endpoints
 
-| Endpoint            | Method | Auth Required | Admin Only | Description      |
-| ------------------- | ------ | ------------- | ---------- | ---------------- |
-| `/api/v1/users`     | GET    | Yes           | Yes        | List all users   |
-| `/api/v1/users`     | POST   | Yes           | Yes        | Create user      |
-| `/api/v1/users/:id` | GET    | Yes           | No\*       | Get user details |
-| `/api/v1/users/:id` | PUT    | Yes           | No\*       | Update user      |
-| `/api/v1/users/:id` | DELETE | Yes           | Yes        | Delete user      |
-
-\* Users can access their own data
+| Endpoint            | Method | Auth | Admin | Description      |
+| ------------------- | ------ | ---- | ----- | ---------------- |
+| `/api/v1/users`     | GET    | ✅   | ✅    | List all users   |
+| `/api/v1/users`     | POST   | ✅   | ✅    | Create a user    |
+| `/api/v1/users/:id` | GET    | ✅   | 🚫    | Get user details |
+| `/api/v1/users/:id` | PUT    | ✅   | 🚫    | Update user      |
+| `/api/v1/users/:id` | DELETE | ✅   | ✅    | Delete user      |
 
 ### Profile Management
 
-| Endpoint     | Method | Description     | Success Response | Error Response      |
-| ------------ | ------ | --------------- | ---------------- | ------------------- |
-| `/api/v1/me` | GET    | Get own profile | `200 OK`         | `401 Unauthorized`  |
-| `/api/v1/me` | PATCH  | Update profile  | `204 No Content` | `422 Unprocessable` |
-| `/api/v1/me` | DELETE | Delete account  | `204 No Content` | `401 Unauthorized`  |
+| Endpoint     | Method | Description        | Auth | Response         |
+| ------------ | ------ | ------------------ | ---- | ---------------- |
+| `/api/v1/me` | GET    | Get own profile    | ✅   | `200 OK`         |
+| `/api/v1/me` | PATCH  | Update profile     | ✅   | `204 No Content` |
+| `/api/v1/me` | DELETE | Delete own account | ✅   | `204 No Content` |
 
-## 🧪 Testing
+## 🧪 Development & Testing
+
+### Testing
+
+We use a comprehensive testing setup:
+
+- **MiniTest**: Main testing framework
+- **FactoryBot**: Test data generation
+- **Shoulda Matchers**: Readable test assertions
+- **100% test coverage goal**
 
 ```bash
 # Run all tests
 rails test
 
-# Run specific test file
+# Run specific tests
 rails test test/models/user_test.rb
-
-# Run specific test
 rails test test/models/user_test.rb:42
 ```
 
-### Test Structure
+### Quality Tools
 
-## 🔒 Security Features
-
-- JWT token-based authentication
-- Password encryption with BCrypt
-- Role-based access control
-- Request authentication middleware
-- CORS protection
-- Comprehensive authorization policies
-
-## 🚀 Getting Started
-
-1. Clone the repository
+- **Brakeman**: Security analysis
+- **RuboCop**: Code style enforcement
+- **Annotate**: Model documentation
+- **Bundle Audit**: Dependency scanning
 
 ```bash
-git clone https://github.com/y2-znt/rails-api-starter.git
-```
-
-2. Install dependencies
-
-```bash
-bundle install
-```
-
-3. Setup database
-
-```bash
-rails db:create db:migrate
-```
-
-4. Start the server
-
-```bash
-rails server
-```
-
-## 💡 Best Practices Implemented
-
-- **Service-Oriented Architecture**
-- **DRY (Don't Repeat Yourself)** principles
-- **SOLID** principles adherence
-- **Comprehensive Error Handling**
-- **Security-First** approach
-- **Test-Driven Development**
-- **Clean Code** practices
-
-## ♾️ Continuous Integration
-
-This project implements a robust CI pipeline using GitHub Actions with three main jobs:
-
-### Pipeline Jobs
-
-| Job              | Description                                | Tools Used            |
-| ---------------- | ------------------------------------------ | --------------------- |
-| 🔒 Security Scan | Analyzes code for security vulnerabilities | Brakeman              |
-| 🎨 Lint          | Ensures consistent code style              | RuboCop Rails Omakase |
-| 🧪 Test          | Runs the test suite with PostgreSQL        | Minitest              |
-
-### Key Features
-
-- **Automated Security Checks**: Brakeman scans for common Rails security vulnerabilities
-- **Code Style Enforcement**: RuboCop ensures consistent code style across the project
-- **Database Integration**: Automated testing with PostgreSQL service container
-- **Artifact Storage**: Failed test screenshots are automatically stored
-- **Multiple Triggers**: Runs on both pull requests and pushes to main branch
-
-### Example Workflow
-
-```bash
-# Security Scan
+# Security scan
 bin/brakeman --no-pager
 
-# Lint Check
+# Lint code
 bin/rubocop -f github
-
-# Test Suite
-bin/rails db:test:prepare test test:system
 ```
 
-The pipeline ensures that all code changes:
+### 🔄 CI/CD Pipeline
 
-- Are free from common security vulnerabilities
-- Follow consistent style guidelines
-- Pass all tests with a real database
-- Maintain high code quality standards
+This project includes a complete GitHub Actions pipeline:
+
+| Stage       | Tools                  |
+| ----------- | ---------------------- |
+| 🔒 Security | Brakeman, Bundle Audit |
+| 🎨 Lint     | RuboCop Rails Omakase  |
+| 🧪 Tests    | MiniTest, PostgreSQL   |
 
 ---
 
-### Built with ❤️ using Ruby on Rails 8
+<div align="center">
+
+Built with ❤️ using Ruby on Rails 8
+
+</div>

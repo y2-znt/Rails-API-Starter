@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  rails-api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+      - ./tmp:/rails/tmp
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://postgres:postgres@db-dev:5432/rails_api_development
+    depends_on:
+      - db-dev
+  db-dev:
+    image: postgres:15
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: rails_api_development
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  postgres_data_dev:
+  bundle_cache:
+# To start the development environment, run:
+# docker compose -f docker-compose-dev.yml up -d --build
+
+# To start a migration, run:
+# docker compose -f docker-compose-dev.yml exec rails-api-dev bundle exec rails db:migrate
