@@ -13,9 +13,9 @@ Rails 8 Production-Ready API Starter — for startups, hackathons, or clean back
 
 [Overview](#-overview) •
 [Quick Start](#-quick-start) •
-[Architecture](#️-architecture) •
+[Architecture](#-architecture) •
 [API Documentation](#-api-documentation) •
-[Development & Testing](#-development)
+[Development & Testing](#-development--testing)
 
 </div>
 
