@@ -38,25 +38,29 @@ gem "active_model_serializers", "~> 0.10.0"
 # Authorization library for Ruby on Rails [https://github.com/varvet/pundit]
 gem "pundit", "~> 2.5"
 
-group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
-
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem "brakeman", require: false
+group :development do
+  # Annotate Rails models with their associations [https://github.com/drwl/annotaterb]
+  gem "annotaterb"
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  # Annotate Rails models with their associations [https://github.com/drwl/annotaterb]
-  gem "annotaterb"
+  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  gem "brakeman", require: false
+end
 
-  # Add Factory Bot Rails for test data generation [https://github.com/thoughtbot/factory_bot_rails]
-  gem "factory_bot_rails"
-
+group :test do
   # Add Shoulda Matchers for testing validations and associations [https://github.com/thoughtbot/shoulda-matchers]
   gem "shoulda-matchers", "~> 6.4"
 
   # Add Shoulda Context for testing contexts [https://github.com/thoughtbot/shoulda-context]
   gem "shoulda-context"
+end
+
+group :development, :test do
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+
+  # Add Factory Bot Rails for test data generation [https://github.com/thoughtbot/factory_bot_rails]
+  gem "factory_bot_rails"
 end
