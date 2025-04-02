@@ -47,6 +47,9 @@ group :development do
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
+
+  # Manage and configure Git hooks [https://github.com/sds/overcommit]
+  gem "overcommit", require: false
 end
 
 group :test do
