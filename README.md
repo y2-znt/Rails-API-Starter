@@ -9,6 +9,8 @@
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
+[![Build & Deploy](https://github.com/y2-znt/rails-api-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/y2-znt/rails-api-starter/actions/workflows/ci.yml)
+
 Rails 8 Production-Ready API Starter — for startups, hackathons, or clean backend projects.
 
 [Overview](#-overview) •
@@ -56,7 +58,8 @@ Rails 8 Production-Ready API Starter — for startups, hackathons, or clean back
 
 ### Prerequisites
 
-- Ruby 3.3.0 or later
+- Ruby 3.3.0
+- Rails 8.0.2
 - PostgreSQL 14 or later
 - Bundler 2.5 or later
 - Docker (optional)
@@ -67,11 +70,16 @@ Rails 8 Production-Ready API Starter — for startups, hackathons, or clean back
 # Clone the repository
 git clone https://github.com/y2-znt/rails-api-starter.git
 
+cd rails-api-starter
+
 # Start the development environment
 docker compose -f docker-compose-dev.yml up -d --build
 
-# Run migrations
-docker compose -f docker-compose-dev.yml exec rails-api-dev bundle exec rails db:migrate
+# Setup the database and run migrations
+docker compose -f docker-compose-dev.yml exec rails-api-dev bundle exec rails db:setup db:migrate
+
+# Run tests to verify setup
+docker compose -f docker-compose-dev.yml exec rails-api-dev bundle exec rails test
 ```
 
 ### Without Docker
@@ -80,13 +88,18 @@ docker compose -f docker-compose-dev.yml exec rails-api-dev bundle exec rails db
 # Clone the repository
 git clone https://github.com/y2-znt/rails-api-starter.git
 
+cd rails-api-starter
+
 # Install dependencies
 bundle install
 
 # Setup database
 cp config/database.yml.example config/database.yml
-rails db:create
+rails db:setup
 rails db:migrate
+
+# Run tests to verify setup
+rails test
 
 # Start the server
 rails server
@@ -115,6 +128,10 @@ This project follows a classic Rails API structure with a versioned `/api/v1` na
 - **Authentication**: JWT (stateless)
 - **Authorization**: Pundit
 - **API Serialization**: ActiveModelSerializers
+- **Development Tools**:
+  - RuboCop Rails Omakase for code style
+  - Annotaterb for model documentation
+  - Overcommit for Git hooks
 - **Security**:
   - Bcrypt for password hashing
   - Rack CORS for CORS handling
@@ -156,7 +173,7 @@ We use a comprehensive testing setup:
 
 - **MiniTest**: Main testing framework
 - **FactoryBot**: Test data generation
-- **Shoulda Matchers**: Readable test assertions
+- **Shoulda Matchers & Context**: Enhanced test assertions and contexts
 - **100% test coverage goal**
 
 ```bash
@@ -182,6 +199,33 @@ bin/brakeman --no-pager
 # Lint code
 bin/rubocop -f github
 ```
+
+### 🔐 Git Hooks (Overcommit)
+
+This project uses [Overcommit](https://github.com/sds/overcommit) to enforce code quality and project consistency through Git hooks.
+
+Before starting development, make sure to set it up properly:
+
+```bash
+# Install Git hooks
+bundle exec overcommit --install
+
+# Sign the configuration file (required once)
+bundle exec overcommit --sign
+```
+
+You can also manually run all hooks:
+
+```bash
+bundle exec overcommit --run
+```
+
+The project includes the following pre-commit hooks:
+
+- **RuboCop**: Automatically checks and corrects Ruby code style
+  - Runs with `--autocorrect` flag to fix simple issues
+  - Required to pass before commit
+  - Uses Rails Omakase style guide
 
 ### 🔄 CI/CD Pipeline
 
