@@ -55,7 +55,7 @@ group :development, :test do
   gem "factory_bot_rails"
 
   # Add Shoulda Matchers for testing validations and associations [https://github.com/thoughtbot/shoulda-matchers]
-  gem "shoulda-matchers", "~> 5.0"
+  gem "shoulda-matchers", "~> 6.4"
 
   # Add Shoulda Context for testing contexts [https://github.com/thoughtbot/shoulda-context]
   gem "shoulda-context"
